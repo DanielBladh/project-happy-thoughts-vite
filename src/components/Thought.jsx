@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from "react";
 
-export default function Thought({ thought, likedPostIds, setLikedPostsCount, setLikedPostIds }) {
+export default function Thought({
+  thought,
+  likedPostIds,
+  setLikedPostsCount,
+  setLikedPostIds,
+}) {
   const [likes, setLikes] = useState(thought.hearts);
+
+  const isLiked = likedPostIds.includes(thought._id);
 
   const handleLikeClick = () => {
     // Send a POST request to like this thought
@@ -54,12 +61,18 @@ export default function Thought({ thought, likedPostIds, setLikedPostsCount, set
   return (
     <div className="thought">
       <p className="thought-message">{thought.message}</p>
-      <div className="thought-likes">
+      <div className={`thought-likes ${isLiked ? "liked" : ""}`}>
         <div className="thought-info">
           <button onClick={handleLikeClick} className="like-button">
-            <span role="img" aria-label="heart">
-              ❤️
-            </span>{" "}
+            {isLiked ? (
+              <span role="img" aria-label="heart">
+                ❤️
+              </span>
+            ) : (
+              <span role="img" aria-label="heart">
+                🤍
+              </span>
+            )}
           </button>
           <span className="like-count">{likes}</span>
         </div>
