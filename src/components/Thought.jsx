@@ -7,7 +7,6 @@ export default function Thought({
   setLikedPostIds,
 }) {
   const [likes, setLikes] = useState(thought.hearts);
-
   const isLiked = likedPostIds.includes(thought._id);
 
   const handleLikeClick = () => {

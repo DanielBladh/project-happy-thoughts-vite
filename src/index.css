@@ -111,15 +111,23 @@ h1 {
   gap: 25px;
 }
 
-#length {
-  color: gray;
-  margin: 0;
-  min-width: 50px;
+.error-container {
+  display: flex;
+  justify-content: flex-start; /* This will make the error message appear at the top */
+}
+
+.char-count-content {
+  /* This pushes the character count to the far right */
+  margin-left: auto;
+}
+
+.text-red {
+  color: red;
 }
 
 .error-message {
   font-size: 16px;
-  color: gray;
+  color: red;
   margin: 0;
 }
 
@@ -257,5 +265,28 @@ a:hover {
 
   h1 {
     font-size: 45px;
+  }
+}
+
+.bounce-in {
+  animation: bounceIn 0.5s;
+}
+
+@keyframes bounceIn {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  50% {
+    transform: translateY(30%);
+    opacity: 0.7;
+  }
+  70% {
+    transform: translateY(-10%);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
   }
 }
