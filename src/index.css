@@ -113,11 +113,10 @@ h1 {
 
 .error-container {
   display: flex;
-  justify-content: flex-start; /* This will make the error message appear at the top */
+  justify-content: flex-start; 
 }
 
 .char-count-content {
-  /* This pushes the character count to the far right */
   margin-left: auto;
 }
 
