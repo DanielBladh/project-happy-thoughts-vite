@@ -4,6 +4,7 @@ export default function ThoughtForm({ onNewThought }) {
   const [message, setMessage] = useState("");
   const [charCount, setCharCount] = useState(0);
   const [error, setError] = useState(null);
+  const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
     setCharCount(message.length);
@@ -11,7 +12,8 @@ export default function ThoughtForm({ onNewThought }) {
 
   const handleInputChange = (event) => {
     setMessage(event.target.value);
-    setError(null); // Clear any previous error when user types.
+    setError(null);
+    setSubmitted(false); // Reset the submitted state when the user types.
   };
 
   const handleSubmit = (event) => {
@@ -38,14 +40,18 @@ export default function ThoughtForm({ onNewThought }) {
         // Clear the input field and reset character count
         setMessage("");
         setCharCount(0);
+
+        // Set the submitted state to trigger animation
+        setSubmitted(true);
       })
       .catch((error) => {
         // Handle error, if needed
       });
   };
+
   return (
-    <div className="thought-form">
-        <h2>What is making you happy right now?</h2>
+    <div className={`thought-form ${submitted ? "bounce-in" : ""}`}>
+      <h2>What is making you happy right now?</h2>
       <form onSubmit={handleSubmit}>
         <textarea
           placeholder="Share your happy thought..."
@@ -53,12 +59,14 @@ export default function ThoughtForm({ onNewThought }) {
           onChange={handleInputChange}
         ></textarea>
         <div className="char-count">
-        {error && <p className="error-message">{error}😔</p>}
+          {error && <p className="error-message">{error}😔</p>}
           <span id="length" className={charCount > 140 ? "error" : ""}>
             {charCount}/140
           </span>
         </div>
-        <button className="post-button" type="submit">❤️Send Happy Thought!❤️</button>
+        <button className="post-button" type="submit">
+          ❤️Send Happy Thought!❤️
+        </button>
       </form>
     </div>
   );

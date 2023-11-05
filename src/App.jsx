@@ -46,7 +46,7 @@ export const App = () => {
         <span role="img" aria-label="heart">
           ❤️
         </span>{" "}
-        {likedPostsCount}
+        {likedPostsCount} liked posts
       </div>
 
       {/* Render the ThoughtForm component and pass the addThought callback */}
@@ -54,6 +54,7 @@ export const App = () => {
 
       {/* Render the ThoughtList component and pass the list of thoughts */}
       <ThoughtList
+        thoughts={thoughts}
         likedPostIds={likedPostIds}
         setLikedPostsCount={setLikedPostsCount}
         setLikedPostIds={setLikedPostIds}

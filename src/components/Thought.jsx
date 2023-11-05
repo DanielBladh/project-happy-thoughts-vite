@@ -5,15 +5,16 @@ export default function Thought({
   likedPostIds,
   setLikedPostsCount,
   setLikedPostIds,
+  className,
 }) {
   const [likes, setLikes] = useState(thought.hearts);
-
-  const isLiked = likedPostIds.includes(thought._id);
+  const thoughtId = thought._id;
+  const isLiked = likedPostIds.includes(thoughtId);
 
   const handleLikeClick = () => {
     // Send a POST request to like this thought
     fetch(
-      `https://happy-thoughts-ux7hkzgmwa-uc.a.run.app/thoughts/${thought._id}/like`,
+      `https://happy-thoughts-ux7hkzgmwa-uc.a.run.app/thoughts/${thoughtId}/like`,
       {
         method: "POST",
       }
@@ -24,13 +25,19 @@ export default function Thought({
         setLikes(data.hearts);
 
         // Check if the user hasn't liked this post before
-        if (!likedPostIds.includes(thought._id)) {
+        if (!likedPostIds.includes(thoughtId)) {
           // Increment the count of different posts liked by the user
           setLikedPostsCount((count) => count + 1);
-        }
 
-        // Add the thought's ID to the likedPostIds array
-        setLikedPostIds([thought._id, ...likedPostIds]);
+          // Add the thought's ID to the likedPostIds array
+          setLikedPostIds((ids) => [thoughtId, ...ids]);
+
+          // Store liked post IDs in local storage
+          localStorage.setItem(
+            "likedPostIds",
+            JSON.stringify([thoughtId, ...ids])
+          );
+        }
       })
       .catch((error) => {
         // Handle error, if needed
@@ -58,12 +65,27 @@ export default function Thought({
     }
   }
 
+  useEffect(() => {
+    // Load liked post IDs from local storage when the component mounts
+    const storedLikedPostIds = localStorage.getItem("likedPostIds");
+    if (storedLikedPostIds) {
+      const parsedLikedPostIds = JSON.parse(storedLikedPostIds);
+      setLikedPostIds(parsedLikedPostIds);
+      setLikedPostsCount(parsedLikedPostIds.length);
+    }
+  }, [setLikedPostIds, setLikedPostsCount]);
+
   return (
-    <div className="thought">
+    <div className={`thought ${className}`}>
       <p className="thought-message">{thought.message}</p>
       <div className={`thought-likes ${isLiked ? "liked" : ""}`}>
         <div className="thought-info">
-          <button onClick={handleLikeClick} className="like-button">
+          <button
+            onClick={handleLikeClick}
+            className={`like-button ${
+              isLiked ? "liked-button" : "not-liked-button"
+            }`}
+          >
             {isLiked ? (
               <span role="img" aria-label="heart">
                 ❤️
